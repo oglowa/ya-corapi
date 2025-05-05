@@ -1,8 +1,9 @@
-[<img src="https://www.arvato-systems.de/resource/crblob/192802/c1761df5c2dd23860dde84dcc0a7189f/arvato-logo-svg-data.svg" alt="Logo" title="Arvato Systems GmbH" width="250px"/>](https://www.arvato-systems.de/resource/crblob/192802/c1761df5c2dd23860dde84dcc0a7189f/arvato-logo-svg-data.svg "Arvato Systems GmbH")
+[<img src="https://www.arvato-systems.de/resource/crblob/192802/c1761df5c2dd23860dde84dcc0a7189f/arvato-logo-svg-data.svg" alt="Logo" title="Arvato Systems GmbH" width="250px"/>](https://www.arvato-systems.de/ "Arvato Systems GmbH")
 
 # Confluence Maintenance by REST API
 
-![Latest Version](https://img.shields.io/badge/release-latest-blue?logo=bitbucket&style=plastic&longCache=true "Latest Version") ![Software License](https://img.shields.io/badge/license-by_Arvato_Systems_GmbH-brightgreen.svg?longCache=true&style=plastic "Software License")
+![Latest Version](https://img.shields.io/badge/release-latest-blue?logo=github&style=plastic "Latest Version")
+![Software License](https://img.shields.io/github/license/oglowa/confluence-restapi-maintenance?style=plastic "Software License")
 
 (c) 2024 Oliver Glowa (glo03) / Arvato Systems GmbH
 
