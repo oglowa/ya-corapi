@@ -1,8 +1,8 @@
 <?php
-require_once "../common/functions.auth.php";
+require_once "../common/auth.inc.php";
 
-$scriptName = basename(__FILE__, ".php");
-require_once "../common/functions.php";
+define("SCRIPT_NAME", basename(__FILE__, ".php"));
+require_once "../common/functions.inc.php";
 
 /**
  * @param $pageId
@@ -10,9 +10,9 @@ require_once "../common/functions.php";
  * @return void
  */
 function loopThruUpdates($pageId): void {
-    global $tokenName, $curlSession, $targetOrgDir, $totalSize;
+    global $totalSize;
 
-    $curlSession = prepareCurl($tokenName);
+    $curlSession = prepareCurl();
     $loadUrl     = prepareLoadUrl($pageId);
     $result      = execCurl($curlSession, $loadUrl);
 
@@ -23,7 +23,7 @@ function loopThruUpdates($pageId): void {
             $pageVersionLoaded = $result['version']['number'];
             $pageTitleLoaded   = $result['title'];
 
-            storeData($targetOrgDir, $pageIdLoaded, $pageBodyLoaded);
+            storeData(TARGET_ORGDIR, $pageIdLoaded, $pageBodyLoaded);
             updatePage($pageIdLoaded, $pageBodyLoaded, $pageVersionLoaded, $pageTitleLoaded);
             $totalSize = 1;
         } else {
@@ -48,7 +48,7 @@ function mainUpdate(): void {
         echo sprintf("%s. total:%s / pageid:%s / title:%s\n", $fallbackIdx, $fallbackIdx, $page[0], $page[2]);
         if ($fallbackIdx >= 1000) {
             echo sprintf("+++ fallback exit after %s iterations +++", $fallbackIdx);
-            exit(1);
+            exit(10);
         }
     }
 }

@@ -1,33 +1,30 @@
 <?php
-$scriptName = basename(__FILE__, ".php");
-require_once "../common/functions.auth.php";
-require_once "../common/functions.php";
+define("SCRIPT_NAME", basename(__FILE__, ".php"));
+require_once __DIR__ . "/../common/functions.inc.php";
 
-
-$spaceKey        = 'NMAS';
-$searchTerm      = 'title=REST-API%2001';
-$pageId          = 591855803;
-
+$spaceKey   = 'NMAS';
+$searchTerm = 'title=REST-API%2001';
+$pageId     = 591855803;
 
 function outputResult($result) {
     $hasResults = checkData($result);
     if ($hasResults) {
-            showResults($result);
+        showResults($result);
     } else {
-        echo "found no results!\n";
+        echo FOUND_NO_RESULTS;
     }
 }
 
 function outputResults($result) {
     $hasResults = checkData($result);
     if ($hasResults) {
-        $idx=1;
+        $idx = 0;
         foreach ($result['results'] as $singleResult) {
-            //storeResults($targetDir, $singleResult);
+            //storeResults(TARGET_DIR, $singleResult);
             showResults($singleResult, $idx++);
         }
     } else {
-        echo "found no results!\n";
+        echo FOUND_NO_RESULTS;
     }
 }
 
@@ -39,50 +36,43 @@ function outputResults($result) {
  *
  * @return void
  */
-function loopThruSearchResults($spaceKey, $searchTerm, $searchFromPos, $searchLimit): void {
-    global $tokenName, $curlSession;
-    global $targetDir;
-    global $totalSize, $currentPos, $nextPos, $searchLimit;
-
-    $curlSession = prepareCurl($tokenName);
-    $searchUrl   = prepareSearchUrl($spaceKey, $searchTerm, $searchFromPos, $searchLimit);
+function loopThruSearchResults($spaceKey, $searchTerm, $searchFromPos, $searchLimit = SEARCH_LIMIT): void {
+    $curlSession = prepareCurl();
+    $searchUrl   = prepareSearchUrl2($spaceKey, $searchTerm, $searchFromPos, $searchLimit);
     $result      = execCurl($curlSession, $searchUrl);
 
     $hasResults = checkData($result);
     if ($hasResults) {
-        $idx=1;
+        $idx = 0;
         foreach ($result['results'] as $singleResult) {
-            //storeResults($targetDir, $singleResult);
             showResults($singleResult, $idx++);
         }
         resultPosUpdate($result['start'], $result['size'], $result['totalSize']);
     } else {
-        echo "found no results!\n";
+        echo FOUND_NO_RESULTS;
     }
 }
 
 function mainSearchWithLoop(): void {
-    global $targetDir, $spaceKey;
-    global $totalSize, $currentPos, $nextPos, $searchLimit;
+    global $spaceKey;
+    global $totalSize, $currentPos, $nextPos;
     global $searchTerm;
 
-    //prepareFilesystem();
     $fallbackIdx = 0;
     do {
-        loopThruSearchResults($spaceKey, $searchTerm, $nextPos, $searchLimit);
+        loopThruSearchResults($spaceKey, $searchTerm, $nextPos, SEARCH_LIMIT);
         $fallbackIdx++;
         if ($fallbackIdx >= 10) {
             echo "+++ fallback exit after 10 iterations +++";
-            exit(1);
+            exit(10);
         }
     } while ($totalSize > $currentPos);
 }
 
 function mainSearchPageId(): void {
-    global $tokenName, $curlSession;
     global $pageId;
 
-    $curlSession = prepareCurl($tokenName);
+    $curlSession = prepareCurl();
     $searchUrl   = prepareApiByPageIdUrl($pageId);
     $result      = execCurl($curlSession, $searchUrl);
 
@@ -90,10 +80,9 @@ function mainSearchPageId(): void {
 }
 
 function mainSearchBrowse(): void {
-    global $tokenName, $curlSession;
     global $searchTerm;
 
-    $curlSession = prepareCurl($tokenName);
+    $curlSession = prepareCurl();
     $searchUrl   = prepareBrowseUrl($searchTerm);
     $result      = execCurl($curlSession, $searchUrl);
 
@@ -101,10 +90,9 @@ function mainSearchBrowse(): void {
 }
 
 function mainSearchBrowseWithSpaceKey(): void {
-    global $tokenName, $curlSession;
     global $searchTerm, $spaceKey;
 
-    $curlSession = prepareCurl($tokenName);
+    $curlSession = prepareCurl();
     $searchUrl   = prepareBrowseUrl($searchTerm, $spaceKey);
     $result      = execCurl($curlSession, $searchUrl);
 
@@ -112,10 +100,9 @@ function mainSearchBrowseWithSpaceKey(): void {
 }
 
 function mainSearchScan(): void {
-    global $tokenName, $curlSession;
     global $searchTerm, $spaceKey;
 
-    $curlSession = prepareCurl($tokenName);
+    $curlSession = prepareCurl();
     $searchUrl   = prepareScanUrl($searchTerm, $spaceKey);
     $result      = execCurl($curlSession, $searchUrl);
 
