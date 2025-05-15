@@ -13,7 +13,7 @@ function _getAddonsMacrosList1(): array {
 }
 
 function _getAddonsMacrosList2(): array {
-    $addOns = [
+    return [
         'Advanced Tables for Confluence'         => [
             'json-table',
             'table-plus',
@@ -72,12 +72,10 @@ function _getAddonsMacrosList2(): array {
             'spreadsheet-table',
         ],
     ];
-
-    return $addOns;
 }
 
 function _getAddonsMacrosListAll(): array {
-    $addOns = [
+    return [
         'Advanced Roadmaps for Jira in Confluence' => [
             'portfolio-for-jira-plan',
         ],
@@ -357,8 +355,6 @@ function _getAddonsMacrosListAll(): array {
             'unmigrated-wiki-markup',
         ],
     ];
-
-    return $addOns;
 }
 
 function getAddonsMacrosList(int $mode = MACRO_SINGLE): array {

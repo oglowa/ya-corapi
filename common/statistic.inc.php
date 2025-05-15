@@ -20,17 +20,17 @@ function outputStats() {
 function addToStats($addOn, $macroName, $space, $totals): void {
     global $stats;
 
-    if (isset($addOn) && strlen($addOn) > 0) {
+    if (!empty($addOn)) {
         if (!key_exists($addOn, $stats)) {
             $stats[$addOn] = [];
         }
 
-        if (isset($macroName) && strlen($macroName) > 0) {
+        if (!empty($macroName)) {
             if (!key_exists($macroName, $stats[$addOn])) {
                 $stats[$addOn][$macroName] = [];
             }
 
-            if (isset($space) && strlen($space) > 0) {
+            if (!empty($space)) {
                 if (!key_exists($space, $stats[$addOn][$macroName])) {
                     $stats[$addOn][$macroName][$space] = 0;
                 }
@@ -40,16 +40,16 @@ function addToStats($addOn, $macroName, $space, $totals): void {
     }
 }
 
-function analyzeResults($addOn, $macroName, $result) {
-    $hasResults = checkData($result, true);
+function analyzeResponse($addOn, $macroName, $response) {
+    $hasResults = checkData($response, true);
     if ($hasResults) {
-        foreach ($result['results'] as $singleResult) {
-            $totals = isset($result['totalSize']) ? $result['totalSize'] : 0;
+        foreach ($response['results'] as $singleResult) {
+            $totals = isset($response['totalSize']) ? $response['totalSize'] : 0;
             $space  = getSpaceKeyFromResult($singleResult);
             addToStats($addOn, $macroName, $space, $totals);
         }
-        showTotals($result);
+        showTotals($response);
     } else {
-        echo FOUND_NO_RESULTS;
+        logFast(MSG_FOUND_NO_RESULTS);
     }
 }

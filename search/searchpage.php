@@ -6,25 +6,25 @@ $spaceKey   = 'NMAS';
 $searchTerm = 'title=REST-API%2001';
 $pageId     = 591855803;
 
-function outputResult($result) {
-    $hasResults = checkData($result);
+function outputResult($response) {
+    $hasResults = checkData($response);
     if ($hasResults) {
-        showResults($result);
+        showResults($response);
     } else {
-        echo FOUND_NO_RESULTS;
+        logFast(MSG_FOUND_NO_RESULTS);
     }
 }
 
-function outputResults($result) {
-    $hasResults = checkData($result);
+function outputResults($response) {
+    $hasResults = checkData($response);
     if ($hasResults) {
         $idx = 0;
-        foreach ($result['results'] as $singleResult) {
+        foreach ($response['results'] as $singleResult) {
             //storeResults(TARGET_DIR, $singleResult);
             showResults($singleResult, $idx++);
         }
     } else {
-        echo FOUND_NO_RESULTS;
+        logFast(MSG_FOUND_NO_RESULTS);
     }
 }
 
@@ -38,18 +38,18 @@ function outputResults($result) {
  */
 function loopThruSearchResults($spaceKey, $searchTerm, $searchFromPos, $searchLimit = SEARCH_LIMIT): void {
     $curlSession = prepareCurl();
-    $searchUrl   = prepareSearchUrl2($spaceKey, $searchTerm, $searchFromPos, $searchLimit);
-    $result      = execCurl($curlSession, $searchUrl);
+    $searchUrl   = _prepareSearchUrl($spaceKey, $searchTerm, $searchFromPos, $searchLimit);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    $hasResults = checkData($result);
+    $hasResults = checkData($response);
     if ($hasResults) {
         $idx = 0;
-        foreach ($result['results'] as $singleResult) {
+        foreach ($response['results'] as $singleResult) {
             showResults($singleResult, $idx++);
         }
-        resultPosUpdate($result['start'], $result['size'], $result['totalSize']);
+        resultPosUpdate($response['start'], $response['size'], $response['totalSize']);
     } else {
-        echo FOUND_NO_RESULTS;
+        logFast(MSG_FOUND_NO_RESULTS);
     }
 }
 
@@ -63,7 +63,7 @@ function mainSearchWithLoop(): void {
         loopThruSearchResults($spaceKey, $searchTerm, $nextPos, SEARCH_LIMIT);
         $fallbackIdx++;
         if ($fallbackIdx >= 10) {
-            echo "+++ fallback exit after 10 iterations +++";
+            logFast("+++ fallback exit after 10 iterations +++");
             exit(10);
         }
     } while ($totalSize > $currentPos);
@@ -74,9 +74,9 @@ function mainSearchPageId(): void {
 
     $curlSession = prepareCurl();
     $searchUrl   = prepareApiByPageIdUrl($pageId);
-    $result      = execCurl($curlSession, $searchUrl);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    outputResult($result);
+    outputResult($response);
 }
 
 function mainSearchBrowse(): void {
@@ -84,9 +84,9 @@ function mainSearchBrowse(): void {
 
     $curlSession = prepareCurl();
     $searchUrl   = prepareBrowseUrl($searchTerm);
-    $result      = execCurl($curlSession, $searchUrl);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    outputResults($result);
+    outputResults($response);
 }
 
 function mainSearchBrowseWithSpaceKey(): void {
@@ -94,9 +94,9 @@ function mainSearchBrowseWithSpaceKey(): void {
 
     $curlSession = prepareCurl();
     $searchUrl   = prepareBrowseUrl($searchTerm, $spaceKey);
-    $result      = execCurl($curlSession, $searchUrl);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    outputResults($result);
+    outputResults($response);
 }
 
 function mainSearchScan(): void {
@@ -104,28 +104,28 @@ function mainSearchScan(): void {
 
     $curlSession = prepareCurl();
     $searchUrl   = prepareScanUrl($searchTerm, $spaceKey);
-    $result      = execCurl($curlSession, $searchUrl);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    outputResults($result);
+    outputResults($response);
 }
 
 function main() {
-    echo "\n\n+++ mainSearchWithLoop +++\n";
+    logFast("\n\n+++ mainSearchWithLoop +++\n");
     mainSearchWithLoop();
 
-    echo "\n\n+++ mainSearchBrowse +++\n";
+    logFast("\n\n+++ mainSearchBrowse +++\n");
     mainSearchBrowse();
 
-    echo "\n\n+++ mainSearchPageId +++\n";
+    logFast("\n\n+++ mainSearchPageId +++\n");
     mainSearchPageId();
 
-    echo "\n\n+++ mainSearchBrowse +++\n";
+    logFast("\n\n+++ mainSearchBrowse +++\n");
     mainSearchBrowse();
 
-    echo "\n\n+++ mainSearchBrowseWithSpaceKey +++\n";
+    logFast("\n\n+++ mainSearchBrowseWithSpaceKey +++\n");
     mainSearchBrowseWithSpaceKey();
 
-    echo "\n\n+++ mainSearchScan +++\n";
+    logFast("\n\n+++ mainSearchScan +++\n");
     mainSearchScan();
 }
 

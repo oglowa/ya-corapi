@@ -12,6 +12,35 @@ require_once __DIR__ . "/statistic.inc.php";
  */
 
 /**
+ * @param $newSession
+ */
+function prepareCertificate(&$newSession): void {
+    if (file_exists(MY_CERT_CA)) {
+        curl_setopt($newSession, CURLOPT_CAINFO, MY_CERT_CA);
+    } else {
+        logMe("CA certificate not found: '%s'", MY_CERT_CA);
+        curl_setopt($newSession, CURLOPT_SSL_VERIFYPEER, false); // NOSONAR php:S4830
+    }
+}
+
+function prepareAuthorisation(&$newSession): void {
+    $token = getTokenValue();
+    if (!(empty($token))) {
+        curl_setopt(
+            $newSession,
+            CURLOPT_HTTPHEADER,
+            [
+                'Content-Type: application/json',
+                "Authorization: Bearer " . $token,
+            ]
+        );
+    } else {
+        $auth = getAuthValue();
+        curl_setopt($newSession, CURLOPT_USERPWD, $auth);
+    }
+}
+
+/**
  *
  * @return false|resource
  */
@@ -20,27 +49,25 @@ function prepareCurl() {
 
     // Set cURL options
     curl_setopt($newSession, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($newSession, CURLOPT_CAINFO, sprintf("%s/cacert.pem", __DIR__));
-
-    //curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-    curl_setopt(
-        $newSession,
-        CURLOPT_HTTPHEADER,
-        [
-            'Content-Type: application/json',
-            "Authorization: Bearer " . getTokenValue(),
-        ]
-    );
     curl_setopt($newSession, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    prepareCertificate($newSession);
+    prepareAuthorisation($newSession);
 
     return $newSession;
 }
 
 function getTokenValue(): string {
     $tokenValue = getenv(AUTH_TOKEN_NAME);
-    echo strlen($tokenValue) < 1 ? sprintf("\nToken '%s' is NOT set!\n", AUTH_TOKEN_NAME) : '';
+
+    logFast(strlen($tokenValue) < 1 ? sprintf("\nToken '%s' is NOT set!\n", AUTH_TOKEN_NAME) : '');
 
     return $tokenValue;
+}
+
+function getAuthValue(): string {
+    logFast(MSG_NOT_IMPLEMENTED);
+
+    return '$username:$password';
 }
 
 function updatePage($pageId, $pageBody, $pageVersion, $pageTitle, $comment = "Update page without changes", $pageType = "page"): bool {
@@ -77,8 +104,8 @@ function updatePage($pageId, $pageBody, $pageVersion, $pageTitle, $comment = "Up
 
 //    curl_close($writeSession);
 //    logMe("Exec updatePage %s\n", $pageId);
-        $result  = execCurl($writeSession, $updateURL);
-        $success = checkData($result);
+        $response = execCurl($writeSession, $updateURL);
+        $success  = checkData($response);
         logMe("Update page '%s' for '%s' is %s!\n", $pageId, $pageTitle, $success ? "successful" : "failed");
     } else {
         logMe("No current version provided for '%s'!\n", $pageId);
@@ -203,37 +230,36 @@ function readResultFile($fileName): array {
 /**
  * Check, if there is data in the result
  *
- * @param      $responseData
+ * @param      $response
  *
  * @param bool $isQuite
  *
  * @return bool
  */
-function checkData($responseData, bool $isQuite = false): bool {
+function checkData($response, bool $isQuite = false): bool {
     $hasData = true;
 
-    if (isset($responseData)) {
-        if (key_exists('statusCode', $responseData)) {
-            logMe("Statuscode : %s\n", $responseData['statusCode']);
-            var_dump($responseData);
+    if (is_array($response)) {
+        if (key_exists('statusCode', $response)) {
+            logMe(MSG_CURL_ERROR, $response['statusCode'], $response['reason'], $response['message']);
             $hasData = false;
         } else {
             if (!$isQuite) {
-                showTotals($responseData);
+                showTotals($response);
             }
         }
     } else {
-        echo "Nothing found\n";
+        logFast("Response is empty or null!");
         $hasData = false;
     }
 
     return $hasData;
 }
 
-function modifyData($orgDir, $responseData, $modDir, $searchText, $replaceText): void {
-    if (isset($responseData) && array_key_exists('results', $responseData)) {
+function modifyData($orgDir, $response, $modDir, $searchText, $replaceText): void {
+    if (is_array($response) && array_key_exists('results', $response)) {
         $idx = 0;
-        foreach ($responseData['results'] as $page) {
+        foreach ($response['results'] as $page) {
             $pageId    = $page['id'];
             $pageTitle = $page['title'];
             $pageBody  = $page['body']['storage']['value'];
@@ -271,15 +297,15 @@ function modifyBody($modDir, $id, $oldBody, $searchText, $replaceText): void {
  * Misc Functions
  */
 
-function prepareSearchUrl1($searchTerm, ?String $spaceKey = null, bool $withBody = false): string {
-    return prepareSearchUrl2($spaceKey, $searchTerm, null, null, $withBody);
+function prepareSearchUrl1($searchTerm, ?String $spaceKey = null, $pageType = "page", bool $withBody = false): string {
+    return _prepareSearchUrl($spaceKey, $searchTerm, null, null, $pageType, $withBody);
 }
 
-function prepareSearchUrl2($spaceKey, $searchTerm, $searchFromPos, $searchLimit = SEARCH_LIMIT, bool $withBody = false): string {
+function _prepareSearchUrl($spaceKey, $searchTerm, $searchFromPos, $searchLimit = SEARCH_LIMIT, $pageType = "page", bool $withBody = false): string {
     $prepareUrl = sprintf("%s?cql=", CONF_SEARCH_URL);
     $prepareUrl .= sprintf("siteSearch~%s", urlencode("\"{$searchTerm}\""));
     $prepareUrl .= sprintf("+AND+space.type=%s", urlencode("global"));
-    $prepareUrl .= sprintf("+AND+type=%s", urlencode("\"page\""));
+    $prepareUrl .= sprintf("+AND+type=%s", urlencode("\"{$pageType}\""));
     if (!is_null($spaceKey)) {
         $prepareUrl .= sprintf("+AND+space=%s", urlencode("\"{$spaceKey}\""));
     }
@@ -288,13 +314,13 @@ function prepareSearchUrl2($spaceKey, $searchTerm, $searchFromPos, $searchLimit 
     }
     $prepareUrl .= sprintf("&%s", ($withBody ? REQP_SEARCH_FULL : REQP_SEARCH_LIGHT));
 
-    //logMe("\n%s\n\n", $prepareUrl);
+    logMe("\n%s\n\n", $prepareUrl);
 
     return $prepareUrl;
 }
 
 function addSpaceFilter($spaceKey, $prepareUrl): string {
-    if (isset($spaceKey) && strlen($spaceKey) > 0) {
+    if (!empty($spaceKey)) {
         $prepareUrl .= sprintf("&spaceKey=%s", $spaceKey);
     }
 

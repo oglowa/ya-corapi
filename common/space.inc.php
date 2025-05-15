@@ -22,7 +22,7 @@ function _getSpaceList1(): array {
 }
 
 function _getSpaceList2(): array {
-    return [];
+    return ['NMAS', 'NMVSDOC'];
 }
 
 function getSpaceList(int $mode = SPACE_SINGLE): array {

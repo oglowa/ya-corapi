@@ -26,7 +26,7 @@ Managing the maintenance of a confluence instance via REST API.
 - [PHP](https://www.php.net)
 - [Composer](https://getcomposer.org/) (optional)
 
-# How to use it
+# Configuration
 
 ## Unix / Linux
 
@@ -49,6 +49,31 @@ Managing the maintenance of a confluence instance via REST API.
 - Edit the file `%USERPROFILE%\.restapi\myauth.inc.php`
   - Replace `#confluence-url_for_production#` with your Confluence URL for the production environment
   - Replace `#confluence-url_for_testing#` with your Confluence URL for the testing environment
+
+# How to use it
+
+The functions are separated in subfolders
+- count  -> Count specific pages / elements 
+- search -> Search for specific pages / elements
+
+
+Starting a function is easy from the shell (commandline)
+
+    php -f ./<subfolder>/<function>.php
+
+E.g.
+
+    php -f ./search/searchpage.php   
+
+The results are printed to the console or into a file in the target folder
+
+    ./target/<subfolder>/<yyyymmdd-hhnnss>/<function>.<extension>
+    
+The output can be
+- Text
+- CSV
+- JSON
+
 
 # Notice
 

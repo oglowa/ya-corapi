@@ -6,9 +6,9 @@ function loopSpaces($addOn, $macroName, $searchTerm, $spaces = []) {
     $curlSession = prepareCurl();
     foreach ($spaces as $space) {
         logMe("        Checking Space: '%s' - START ++\n", $space);
-        $searchUrl = prepareSearchUrl2($space, $searchTerm, 0, 1);
-        $result    = execCurl($curlSession, $searchUrl);
-        analyzeResults($addOn, $macroName, $result);
+        $searchUrl = _prepareSearchUrl($space, $searchTerm, 0, 1);
+        $response  = execCurl($curlSession, $searchUrl);
+        analyzeResponse($addOn, $macroName, $response);
         logMe("        Checking Space: '%s' - END  ++\n", $space);
     }
 }
@@ -17,7 +17,7 @@ function loopMacros($addOn, $macroNames, $spaces = []) {
     foreach ($macroNames as $macroName) {
         logMe("    Checking Macro: '%s' - START +++\n", $macroName);
         $searchTerm = "macroName:$macroName";
-        if (isset($spaces) && sizeof($spaces) > 0) {
+        if (is_array($spaces) && sizeof($spaces) > 0) {
             loopSpaces($addOn, $macroName, $searchTerm, $spaces);
         } else {
             logMe("%s\n", "No Space defined");

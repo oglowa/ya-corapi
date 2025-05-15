@@ -7,11 +7,13 @@ function spacesGlobal(bool $asCsv = true) {
 
     $curlSession = prepareCurl();
     $searchUrl   = prepareSpaceListUrl('global', 100);
-    $result      = execCurl($curlSession, $searchUrl);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    $spaces = prepareSpaceArray($result['results'], $asCsv);
-    prepareFilesystem();
-    storeText(TARGET_DIR, TARGET_FILENAME . ".inc.php", prepareMySpaceFile($spaces));
+    if (checkData($response)) {
+        $spaces = prepareSpaceArray($response['results'], $asCsv);
+        prepareFilesystem();
+        storeText(TARGET_DIR, TARGET_FILENAME . ".inc.php", prepareMySpaceFile($spaces));
+    }
 }
 
 function spacesPersonal(bool $asCsv = true) {
@@ -19,14 +21,16 @@ function spacesPersonal(bool $asCsv = true) {
 
     $curlSession = prepareCurl();
     $searchUrl   = prepareSpaceListUrl('personal', 150);
-    $result      = execCurl($curlSession, $searchUrl);
+    $response    = execCurl($curlSession, $searchUrl);
 
-    prepareSpaceArray($result['results'], $asCsv);
+    if (checkData($response)) {
+        prepareSpaceArray($response['results'], $asCsv);
+    }
 }
 
 function main() {
     spacesGlobal();
-    //spacesPersonal();
+    spacesPersonal();
 }
 
 main();

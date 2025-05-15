@@ -10,7 +10,12 @@ CONST REQP_PERM              = 'expand=read.restrictions.user,read.restrictions.
 CONST REQP_SEARCH_LIGHT      = 'expand=content.space,content.history,content.version';
 CONST REQP_SEARCH_FULL       = REQP_SEARCH_LIGHT . ',content.body.storage';
 CONST RESP_CSV_SPACE_RESULTS = '.results[]| .key + ";" + .type + ";" + "status" + ";" + "\"" + .name + "\"" + ";" +  "\"" + .description.plain.value + "\""';
-CONST FOUND_NO_RESULTS       = "found no results!\n";
+CONST MSG_FOUND_NO_RESULTS   = "WARN  Found no results!\n";
+CONST MSG_NOT_IMPLEMENTED    = "FATAL not implemented so far!\n";
+CONST MSG_CURL_ERROR         = "ERROR Status %s - '%s' - '%s'\n";
+
+CONST PAGE_TYPES     = ['page', 'attachment', 'blogpost'];
+CONST PAGE_TYPES_ALL = ['page', 'attachment', 'blogpost', 'comment'];
 
 $totalSize  = 0;
 $currentPos = 0;
@@ -28,6 +33,8 @@ define("TARGET_MODDIR", sprintf("%s%smod", TARGET_DIR, DIRECTORY_SEPARATOR));
 
 define("CONF_CONTENT_URL", sprintf("%s/rest/api/content", CONF_BASE_URL));
 define("CONF_SEARCH_URL", sprintf("%s/rest/api/search", CONF_BASE_URL));
+
+define("MY_CERT_CA", MY_DIR . DIRECTORY_SEPARATOR . "cacert.pem");
 
 function validateSettings() {
     if (!defined("CONF_BASE_URL")) {

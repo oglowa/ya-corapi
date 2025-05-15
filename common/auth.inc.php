@@ -14,7 +14,7 @@ if (USE_PROD) {
     define("AUTH_TOKEN_NAME", "CONF_PAT_PROD");
     $resultsFile = __DIR__ . "/../risks-prod.csv";
     echo "\n\n+++ RUNNING ON PRODUCTION IS OK 4 U? Waiting 5sec +++\n\n";
-    sleep(5);
+    sleep(5); // NOSONAR php:S2964
 } else {
     define("AUTH_TOKEN_NAME", "CONF_PAT_TEST");
     $resultsFile = __DIR__ . "/../risks-test.csv";
