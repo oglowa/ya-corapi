@@ -9,7 +9,7 @@
 ![Language Count](https://img.shields.io/github/languages/count/oglowa/ya-corapi?logo=github&style=plastic "Language Count")
 ![Language Top](https://img.shields.io/github/languages/top/oglowa/ya-corapi?logo=github&style=plastic "Language Top")
 ![Commit Status Master](https://img.shields.io/github/checks-status/oglowa/ya-corapi/master?logo=github&label=checks%20master&style=plastic "Commit Status Master")
-![Commit Status Develop](https://img.shields.io/github/checks-status/oglowa/ya-corapi/develop?logo=github&label=develop%20master&style=plastic "Commit Status Develop")
+![Commit Status Develop](https://img.shields.io/github/checks-status/oglowa/ya-corapi/develop?logo=github&label=checks%20develop&style=plastic "Commit Status Develop")
 
 
 (c) 2024 Oliver Glowa / Arvato Systems GmbH
