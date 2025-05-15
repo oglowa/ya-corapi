@@ -20,7 +20,7 @@ function loopMacros($addOn, $macroNames, $spaces = []) {
         if (isset($spaces) && sizeof($spaces) > 0) {
             loopSpaces($addOn, $macroName, $searchTerm, $spaces);
         } else {
-            logMe("%s", "No Space defined");
+            logMe("%s\n", "No Space defined");
         }
         logMe("    Checking Macro: '%s' - END   +++\n", $macroName);
     }
@@ -35,8 +35,8 @@ function loopAddons($addOns, $spaces = []) {
 }
 
 function main() {
-    $spaces = getSpaceList();
-    $addOns = getAddonsMacrosList();
+    $spaces = getSpaceList(SPACE_ALL);
+    $addOns = getAddonsMacrosList(MACRO_BLOCKER);
     loopAddons($addOns, $spaces);
     outputStats();
 }

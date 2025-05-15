@@ -120,7 +120,8 @@ function execCurl($execSession, $execUrl) {
  * @return void
  */
 function prepareFilesystem(): void {
-    logMe("targetDir: %s\n", TARGET_DIR);
+    logMe("TARGET_ROOT: '%s'\n", TARGET_ROOTDIR);
+    logMe("TARGET_DIR : '%s'\n", TARGET_DIR);
     if (!file_exists(TARGET_ROOTDIR)) {
         mkdir(TARGET_ROOTDIR);
     }
@@ -136,7 +137,7 @@ function prepareFilesystem(): void {
  * @return void
  */
 function storeResults($targetDir, $page): void {
-    $output_file = sprintf("%s/risks-prod.csv", $targetDir);
+    $output_file = sprintf("%s%srisks-prod.csv", $targetDir, DIRECTORY_SEPARATOR);
     $pageId      = $page['id'];
     $line        = sprintf("%s;%s%s;%s", $pageId, CONF_BASE_URL, $page['_links']['tinyui'], $page['title']);
     //logMe("%s\n", $line);
@@ -145,15 +146,15 @@ function storeResults($targetDir, $page): void {
 }
 
 function storeCsv($pathToFile, $fileName, $content): void {
-    $output_file = sprintf("%s/%s.csv", $pathToFile, $fileName);
-    logMe("writing to '%s'\n", $output_file);
+    $output_file = sprintf("%s%s%s.csv", $pathToFile, DIRECTORY_SEPARATOR, $fileName);
+    logMe("Writing to '%s'\n", $output_file);
 
     file_put_contents($output_file, $content, FILE_APPEND);
 }
 
 function storeText($pathToFile, $fileName, $content): void {
-    $output_file = sprintf("%s/%s", $pathToFile, $fileName);
-    logMe("writing to '%s'\n", $output_file);
+    $output_file = sprintf("%s%s%s", $pathToFile, DIRECTORY_SEPARATOR, $fileName);
+    logMe("Writing to '%s'\n", $output_file);
 
     file_put_contents($output_file, $content, FILE_APPEND);
 }
@@ -166,8 +167,8 @@ function storeText($pathToFile, $fileName, $content): void {
  * @return void
  */
 function storeData($targetDir, $pageId, $body): void {
-    $output_file = sprintf("%s/%s.xml", $targetDir, $pageId);
-    logMe("writing to '%s'\n", $output_file);
+    $output_file = sprintf("%s%s%s.xml", $targetDir, DIRECTORY_SEPARATOR, $pageId);
+    logMe("Writing to '%s'\n", $output_file);
 
     file_put_contents($output_file, $body);
 }

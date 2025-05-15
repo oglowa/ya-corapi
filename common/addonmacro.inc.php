@@ -1,72 +1,107 @@
 <?php
 
-CONST MACRO_SINGLE = 1;
-CONST MACRO_SIMPLE = 2;
-CONST MACRO_ALL    = 99;
+CONST MACRO_SINGLE  = 1;
+CONST MACRO_BLOCKER = 2;
+CONST MACRO_ALL     = 99;
 
 function _getAddonsMacrosList1(): array {
     $macroEntry = [];
     array_push($macroEntry, "child-counter", "link-window", "link-to", "outgoing-links", "link-page", "add-page");//,"incoming-links");
-    $addOn['small-test'] = $macroEntry;
+    $addOns['small-test'] = $macroEntry;
 
-    return $addOn;
+    return $addOns;
 }
 
 function _getAddonsMacrosList2(): array {
-    $macroEntry = [];
-    // Advanced Roadmaps for Jira in Confluence
-    array_push($macroEntry, "portfolio-for-jira-plan");
-    // Advanced Tables for Confluence
-    array_push($macroEntry, "csv", "attachment-table", "jql-table"); //, "table-plus", "json-table");
-    // Linking for Confluence
-    array_push($macroEntry, "child-counter", "link-window", "link-to", "outgoing-links", "link-page", "add-page");//,"incoming-links");
-    // Calendar
-    array_push($macroEntry, "calendar");
-    // Confluence Roadmap Planner
-    array_push($macroEntry, "roadmap");
-    //Table Filter, Charts and Spreadsheets for Confluence
-    array_push(
-        $macroEntry,
-        "table-chart",
-        "pivot-table",
-        "csv-table",
-        "spreadsheet-table"
-    );// "table-joiner", "table-excerpt", "table-excerpt-include", "table-filter");
-    // Draw.io Confluence Plugin
-    array_push($macroEntry, "inc - drawio", "drawio - sketch"); //, "drawio");
-    //BPMN Modeler Enterprise
-    //array_push($macros,"vbcp-macro-enterprise");
-    $addOn['subset'] = $macroEntry;
-
-    return $addOn;
-}
-
-function _getAddonsMacrosListAll(): array {
-    $macros = [
-        'Advanced Roadmaps for Jira in Confluence'             => [
-            'portfolio-for-jira-plan',
-        ],
-        'Advanced Tables for Confluence'                       => [
+    $addOns = [
+        'Advanced Tables for Confluence'         => [
             'json-table',
             'table-plus',
             'csv',
             'jql-table',
         ],
-        'Basic Macros'                                         => [
+        'BPMN Modeler Enterprise'                => [
+            'vbcp-macro-enterprise',
+            'chart-plugin',
+            'chart',
+        ],
+        'Comala Document Management'             => [
+            'pagestatus',
+            'pageactivity',
+        ],
+        'Confluence HTML Macros'                 => [
+            'html',
+            'html-include',
+        ],
+        'Linking for Confluence'                 => [
+            'add-page',
+            'link-page',
+        ],
+        'projectdoc Toolbox for Confluence'      => [
+            'projectdoc-properties-marker',
+        ],
+        'Scroll Documents for Confluence'        => [
+            'scroll-document-location',
+        ],
+        'Scroll Exporter Extensions'             => [
+            'scroll-ignore',
+            'scroll-tablelayout',
+            'scroll-title',
+            'scroll-content-block',
+            'scroll-pagebreak',
+            'scroll-landscape',
+            'scroll-portrait',
+            'scroll-pagetitle',
+            'scroll-only',
+            'scroll-exportbutton',
+            'scroll-bookmark',
+        ],
+        'Scroll Platform'                        => [
+            'includeplus',
+            'sv-pagetree',
+            'excerpt-includeplus',
+        ],
+        'Table Filter and Charts for Confluence' => [
+            'table-joiner',
+            'table-excerpt',
+            'table-excerpt-include',
+            'table-filter',
+            'table-chart',
+            'pivot-table',
+            'csv-table',
+            'spreadsheet-table',
+        ],
+    ];
+
+    return $addOns;
+}
+
+function _getAddonsMacrosListAll(): array {
+    $addOns = [
+        'Advanced Roadmaps for Jira in Confluence' => [
+            'portfolio-for-jira-plan',
+        ],
+        'Advanced Tables for Confluence'           => [
+            'json-table',
+            'table-plus',
+            'csv',
+            'jql-table',
+        ],
+        'Basic Macros'                             => [
             'panel',
             'anchor',
             'noformat',
             'loremipsum',
         ],
-        'BPMN Modeler Enterprise'                              => [
+        'BPMN Modeler Enterprise'                  => [
             'vbcp-macro-enterprise',
             'chart-plugin',
             'chart',
         ],
-        'Code Macro Plugin'                                    => [
+        'Code Macro Plugin'                        => [
             'code',
         ],
-        'Comala Document Management'                           => [
+        'Comala Document Management'               => [
             'pagestatus',
             'pageactivity',
             'workflowreport',
@@ -75,45 +110,45 @@ function _getAddonsMacrosListAll(): array {
             'document-stats-report',
             'get-metadata',
         ],
-        'Confluence Attachments Plugin'                        => [
+        'Confluence Attachments Plugin'            => [
             'attachments',
         ],
-        'Confluence Business Blueprints - Plugin'              => [
+        'Confluence Business Blueprints - Plugin'  => [
             'sharelinks-urlmacro',
         ],
-        'Confluence Content Report Plugin'                     => [
+        'Confluence Content Report Plugin'         => [
             'content-report-table',
         ],
-        'Confluence Contributors Plugin'                       => [
+        'Confluence Contributors Plugin'           => [
             'contributors',
         ],
-        'Confluence Create Content Plugin'                     => [
+        'Confluence Create Content Plugin'         => [
             'create-from-template',
         ],
-        'Confluence Expand Macro'                              => [
+        'Confluence Expand Macro'                  => [
             'expand',
         ],
-        'Confluence HTML Macros'                               => [
+        'Confluence HTML Macros'                   => [
             'html',
             'html-include',
         ],
-        'Confluence Inline Tasks'                              => [
+        'Confluence Inline Tasks'                  => [
             'tasks-report-macro',
         ],
-        'Confluence Jira Plugin'                               => [
+        'Confluence Jira Plugin'                   => [
             'jira',
             'jirachart',
         ],
-        'Confluence Live Search Macros Plugin'                 => [
+        'Confluence Live Search Macros Plugin'     => [
             'livesearch',
         ],
-        'Confluence Roadmap Planner'                           => [
+        'Confluence Roadmap Planner'               => [
             'roadmap',
         ],
-        'Confluence View File Macro'                           => [
+        'Confluence View File Macro'               => [
             'view-file',
         ],
-        'confluence-advanced-macros'                           => [
+        'confluence-advanced-macros'               => [
             'excerpt',
             'children',
             'include',
@@ -128,28 +163,28 @@ function _getAddonsMacrosListAll(): array {
             'search',
             'content-by-user',
         ],
-        'Dashboard Macros'                                     => [
+        'Dashboard Macros'                         => [
             'spaces',
         ],
-        'Draw.io Confluence Plugin'                            => [
+        'Draw.io Confluence Plugin'                => [
             'drawio',
             'inc-drawio',
             'drawio-sketch',
         ],
-        'Gadgets Plugin'                                       => [
+        'Gadgets Plugin'                           => [
             'gadget',
         ],
-        'Information Macros Plugin'                            => [
+        'Information Macros Plugin'                => [
             'info',
             'note',
             'warning',
             'tip',
         ],
-        'Layout Macros'                                        => [
+        'Layout Macros'                            => [
             'column',
             'section',
         ],
-        'Linking for Confluence'                               => [
+        'Linking for Confluence'                   => [
             'incoming-links',
             'add-page',
             'child-counter',
@@ -158,42 +193,42 @@ function _getAddonsMacrosListAll(): array {
             'outgoing-links',
             'link-page',
         ],
-        'Office Connector plugin'                              => [
+        'Office Connector plugin'                  => [
             'viewxls',
             'viewdoc',
             'viewppt',
             'viewpdf',
         ],
-        'Page Properties Macros - Plugin'                      => [
+        'Page Properties Macros - Plugin'          => [
             'details',
             'detailssummary',
         ],
-        'Page Tree Plugin'                                     => [
+        'Page Tree Plugin'                         => [
             'pagetree',
             'pagetreesearch',
         ],
-        'Profile Macros'                                       => [
+        'Profile Macros'                           => [
             'profile',
         ],
-        'profile-picture'                                      => [
+        'profile-picture'                          => [
             'profile-picture',
         ],
-        'projectdoc Core Doctypes'                             => [
+        'projectdoc Core Doctypes'                 => [
             'projectdoc-stakeholder-rating-macro',
         ],
-        'projectdoc for Agile Planning'                        => [
+        'projectdoc for Agile Planning'            => [
             'projectdoc-story-status',
             'projectdoc-story-relevance',
             'projectdoc-story-points',
         ],
-        'projectdoc for Software Development'                  => [
+        'projectdoc for Software Development'      => [
             'projectdoc-use-case-level',
             'projectdoc-feature-importance',
             'projectdoc-technical-debt-quality',
             'projectdoc-actor-type',
             'projectdoc-user-type',
         ],
-        'projectdoc Toolbox'                                   => [
+        'projectdoc Toolbox for Confluence'        => [
             'projectdoc-properties-marker',
             'projectdoc-transclusion-parent-property',
             'projectdoc-section',
@@ -271,10 +306,10 @@ function _getAddonsMacrosListAll(): array {
             'projectdoc-action-button-macro',
             'projectdoc-dynamic-document-link-macro',
         ],
-        'Scroll Documents for Confluence'                      => [
+        'Scroll Documents for Confluence'          => [
             'scroll-document-location',
         ],
-        'Scroll Exporter Extensions'                           => [
+        'Scroll Exporter Extensions'               => [
             'scroll-ignore',
             'scroll-tablelayout',
             'scroll-title',
@@ -287,15 +322,15 @@ function _getAddonsMacrosListAll(): array {
             'scroll-exportbutton',
             'scroll-bookmark',
         ],
-        'Scroll Platform'                                      => [
+        'Scroll Platform'                          => [
             'includeplus',
             'sv-pagetree',
             'excerpt-includeplus',
         ],
-        'Status Macro'                                         => [
+        'Status Macro'                             => [
             'status',
         ],
-        'Table Filter, Charts and Spreadsheets for Confluence' => [
+        'Table Filter and Charts for Confluence'   => [
             'table-joiner',
             'table-excerpt',
             'table-excerpt-include',
@@ -305,30 +340,30 @@ function _getAddonsMacrosListAll(): array {
             'csv-table',
             'spreadsheet-table',
         ],
-        'Table of Contents Plugin'                             => [
+        'Table of Contents Plugin'                 => [
             'toc',
             'toc-zone',
         ],
-        'Team Calendars'                                       => [
+        'Team Calendars'                           => [
             'calendar',
         ],
-        'User Lister'                                          => [
+        'User Lister'                              => [
             'userlister',
         ],
-        'Widget Connector'                                     => [
+        'Widget Connector'                         => [
             'widget',
         ],
-        'Wiki Markup Plugin'                                   => [
+        'Wiki Markup Plugin'                       => [
             'unmigrated-wiki-markup',
         ],
     ];
 
-    return $macros;
+    return $addOns;
 }
 
 function getAddonsMacrosList(int $mode = MACRO_SINGLE): array {
     switch ($mode) {
-        case MACRO_SIMPLE:
+        case MACRO_BLOCKER:
             return _getAddonsMacrosList2();
             break;
         case MACRO_ALL:

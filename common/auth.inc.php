@@ -3,6 +3,8 @@
 define("C_MYAUTH", MY_DIR . DIRECTORY_SEPARATOR . "myauth.inc.php");
 if (file_exists(C_MYAUTH)) {
     include_once C_MYAUTH;
+} else {
+    echo sprintf("'%s' not loaded!", C_MYAUTH);
 }
 if (!defined("USE_PROD")) {
     define("USE_PROD", false);
