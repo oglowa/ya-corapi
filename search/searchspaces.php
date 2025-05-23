@@ -1,6 +1,6 @@
 <?php
-define("SCRIPT_NAME", basename(__FILE__, ".php"));
-require_once __DIR__ . "/../common/functions.inc.php";
+define('SCRIPT_NAME', basename(__FILE__, '.php'));
+require_once __DIR__ . '/../common/func-common.inc.php';
 
 function spacesGlobal(bool $asCsv = true) {
     logMeHead("++ %s ++", "Site Spaces");
@@ -12,7 +12,7 @@ function spacesGlobal(bool $asCsv = true) {
     if (checkData($response)) {
         $spaces = prepareSpaceArray($response['results'], $asCsv);
         prepareFilesystem();
-        storeText(TARGET_DIR, TARGET_FILENAME . ".inc.php", prepareMySpaceFile($spaces));
+        storeText(TARGET_DIR, TARGET_FILENAME . '.inc.php', prepareMySpaceFile($spaces));
     }
 }
 

@@ -6,12 +6,12 @@ function outputStats() {
     global $stats;
 
     prepareFilesystem();
-    storeCsv(TARGET_DIR, TARGET_FILENAME, prepareCsvLine("addon", "macroname", "spacekey", "count"));
+    storeCsv(TARGET_DIR, TARGET_FILENAME, prepareCsvLine("%s;%s;%s;%s", "addon", 'macroname', 'spacekey', "count"));
 
     foreach ($stats as $addonName => $addonValues) {
         foreach ($addonValues as $macroName => $statValues) {
             foreach ($statValues as $space => $occurence) {
-                storeCsv(TARGET_DIR, TARGET_FILENAME, prepareCsvLine($addonName, $macroName, $space, $occurence));
+                storeCsv(TARGET_DIR, TARGET_FILENAME, prepareCsvLine("%s;%s;%s;%s", $addonName, $macroName, $space, $occurence));
             }
         }
     }

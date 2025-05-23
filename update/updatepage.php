@@ -1,6 +1,6 @@
 <?php
-define("SCRIPT_NAME", basename(__FILE__, ".php"));
-require_once __DIR__ . "/../common/functions.inc.php";
+define('SCRIPT_NAME', basename(__FILE__, '.php'));
+require_once __DIR__ . '/../common/func-common.inc.php';
 
 function loopThruUpdates($pageId): void {
     global $totalSize;

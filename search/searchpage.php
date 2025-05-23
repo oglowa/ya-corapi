@@ -1,10 +1,20 @@
 <?php
-define("SCRIPT_NAME", basename(__FILE__, ".php"));
-require_once __DIR__ . "/../common/functions.inc.php";
+define('SCRIPT_NAME', basename(__FILE__, '.php'));
+require_once __DIR__ . '/../common/func-common.inc.php';
 
 $spaceKey   = 'NMAS';
 $searchTerm = 'title=REST-API%2001';
 $pageId     = 591855803;
+
+function resultPosUpdate($startNow, $sizeNow, $totalsNow): void {
+    global $currentPos, $nextPos, $totalSize;
+
+    logMe("CURRENT: currentPos: %s / nextPos: %s / totalSize: %s\n", $currentPos, $nextPos, $totalSize);
+    $totalSize  = $totalsNow;
+    $currentPos = $startNow;
+    $nextPos    = $startNow + $sizeNow;
+    logMe("NEW    : currentPos: %s / nextPos: %s / totalSize: %s\n", $currentPos, $nextPos, $totalSize);
+}
 
 function outputResult($response) {
     $hasResults = checkData($response);
@@ -38,7 +48,7 @@ function outputResults($response) {
  */
 function loopThruSearchResults($spaceKey, $searchTerm, $searchFromPos, $searchLimit = SEARCH_LIMIT): void {
     $curlSession = prepareCurl();
-    $searchUrl   = _prepareSearchUrl($spaceKey, $searchTerm, $searchFromPos, $searchLimit);
+    $searchUrl   = _prepareSearchUrl($searchTerm, $spaceKey, $searchFromPos, $searchLimit);
     $response    = execCurl($curlSession, $searchUrl);
 
     $hasResults = checkData($response);

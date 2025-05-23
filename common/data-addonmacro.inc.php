@@ -6,7 +6,7 @@ CONST MACRO_ALL     = 99;
 
 function _getAddonsMacrosList1(): array {
     $macroEntry = [];
-    array_push($macroEntry, "child-counter", "link-window", "link-to", "outgoing-links", "link-page", "add-page");//,"incoming-links");
+    array_push($macroEntry, 'child-counter', 'link-window', 'link-to', 'outgoing-links', 'link-page', 'add-page');//,'incoming-links');
     $addOns['small-test'] = $macroEntry;
 
     return $addOns;

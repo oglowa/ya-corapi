@@ -1,12 +1,12 @@
 <?php
-define("SCRIPT_NAME", basename(__FILE__, ".php"));
-require_once __DIR__ . "/../common/functions.inc.php";
+define('SCRIPT_NAME', basename(__FILE__, '.php'));
+require_once __DIR__ . '/../common/func-common.inc.php';
 
 function loopSpaces($addOn, $macroName, $searchTerm, $spaces = []) {
     $curlSession = prepareCurl();
     foreach ($spaces as $space) {
         logMe("        Checking Space: '%s' - START ++\n", $space);
-        $searchUrl = _prepareSearchUrl($space, $searchTerm, 0, 1);
+        $searchUrl = _prepareSearchUrl($searchTerm, $space, 0, 1);
         $response  = execCurl($curlSession, $searchUrl);
         analyzeResponse($addOn, $macroName, $response);
         logMe("        Checking Space: '%s' - END  ++\n", $space);

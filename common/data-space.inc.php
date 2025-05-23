@@ -4,14 +4,14 @@ CONST SPACE_SINGLE = 1;
 CONST SPACE_SIMPLE = 2;
 CONST SPACE_ALL    = 99;
 
-CONST C_MYSPACES = MY_DIR . DIRECTORY_SEPARATOR . "myspaces.inc.php";
+CONST C_MYSPACES = MY_DIR . DIRECTORY_SEPARATOR . 'myspaces.inc.php';
 if (file_exists(C_MYSPACES)) {
     include_once C_MYSPACES;
 } else {
     echo sprintf("'%s' not loaded!", C_MYSPACES);
 }
 
-if (!function_exists("_getSpaceListAll")) {
+if (!function_exists('_getSpaceListAll')) {
     function _getSpaceListAll(): array {
         return [];
     }
